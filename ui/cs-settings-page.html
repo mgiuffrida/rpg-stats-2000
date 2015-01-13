@@ -1,0 +1,44 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="cs-settings-card.html">
+
+<!-- Page displaying groups of settings in cards. -->
+<polymer-element name="cs-settings-page" attributes="controls" noscript>
+  <template>
+    <style>
+      :host {
+        display: block;
+        font-size: 120%;
+      }
+
+      #page {
+        margin-top: 20px;
+      }
+
+      cs-settings-card {
+        margin: 0 0 20px 5px;
+      }
+
+      cs-settings-card:nth-child(2)::shadow header {
+        height: 53px; /* medium-tall - 40px - 20px - 15px */
+        color: #000;
+        font-size: 150%;
+        margin: 0 -20px 10px -20px;
+        padding: 0 20px 0 20px;
+        border-bottom: 1px solid #ccc;
+      }
+    </style>
+
+    <div id="page">
+       <template repeat="{{ group in controls }}">
+         <cs-settings-card controls="{{ group.controls }}" label="{{ group.label }}"
+             description="{{ group.description }}">
+         </cs-settings-card>
+       </template>
+    </div>
+  </template>
+</polymer-element>

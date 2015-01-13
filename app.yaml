@@ -1,0 +1,45 @@
+application: rpg-stats-2000
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+# Static resources.
+- url: /api
+  static_dir: api
+  secure: always
+
+- url: /model
+  static_dir: model
+  secure: always
+
+- url: /ui
+  static_dir: ui
+  secure: always
+
+- url: /bower_components
+  static_dir: bower_components
+  secure: always
+
+# Application root.
+- url: /.*
+  script: main.app
+  secure: always
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*_test\.py$
+- ^(.*/)?tests\.py$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?.*\.md$
+- ^(.*/)?LICENSE$
+- ^(.*/)?README$
+- ^(.*/)?Makefile$
+
+libraries:
+- name: webapp2
+  version: "latest"

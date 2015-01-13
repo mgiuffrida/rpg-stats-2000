@@ -1,0 +1,61 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../bower_components/core-label/core-label.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+
+<!-- Checkbox control for boolean settings. -->
+<polymer-element name="cs-control-checkbox" attributes="control checked">
+  <template>
+    <style>
+      paper-checkbox {
+        -webkit-padding-end: 20px;
+        -webkit-padding-start: 0;
+      }
+
+      h4 {
+        margin: 14px 0;
+      }
+    </style>
+    <template bind="{{ control as c}}">
+      <core-label horizontal layout center>
+        <paper-checkbox id="checkbox" for checked="{{ checked }}"></paper-checkbox>
+        <div layout vertical>
+          <h4>{{ c.label }}</h4>
+          <template if="{{ c.description }}">
+            <p>{{ c.description }}</p>
+          </template>
+        </div>
+      </core-label>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      ready: function() {
+        Object.observe(api, this.apiChanged.bind(this));
+        if (!this.checked)
+          this.update();
+      },
+
+      apiChanged: function(changes) {
+        if (this.checked)
+          return;
+        for (var i = 0; i < changes.length; i++) {
+          if (changes[i].name == 'pointsLeft') {
+            this.update();
+            return;
+          }
+        }
+      },
+
+      /** Disables the checkbox if it costs more than the points available. */
+      update: function() {
+        var cost = cs.settings[this.control.setting].cost;
+        this.$.checkbox.disabled = cost > api.pointsLeft;
+      },
+    });
+  </script>
+</polymer-element>

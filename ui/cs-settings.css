@@ -1,0 +1,46 @@
+.drawer-label {
+  padding: 0 0 10px 46px;
+}
+
+.drawer-label core-icon {
+    margin: 0 16px 0 4px;
+}
+
+core-toolbar {
+  background: #03a9f4;
+  color: #fff;
+}
+
+core-header-panel {
+  background-color: #eee;
+}
+
+core-header-panel[mode=cover]::shadow #mainContainer {
+  padding: 40px 120px 0 0;
+}
+
+#mainDrawer[narrow] core-header-panel[mode=cover]::shadow #mainContainer {
+  padding-right: 5px;
+}
+
+#pointsLeft {
+  font-size: 120%;
+  color: #03a9f4;
+  margin-bottom: 10px;
+}
+
+#pointsLeft.warning {
+  color: red;
+  font-weight: bold;
+}
+
+#pointsText {
+  font-weight: bold;
+}
+
+#battleButton {
+  background-color: #03a9f4;
+  color: white;
+  width: 50%;
+  margin: 5px auto 20px auto;
+}

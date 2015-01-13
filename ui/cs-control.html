@@ -1,0 +1,56 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../api/settings.html">
+<link rel="import" href="cs-control-checkbox.html">
+<link rel="import" href="cs-control-dropdown.html">
+<link rel="import" href="cs-control-iq.html">
+<link rel="import" href="cs-control-slider.html">
+
+<!-- Control wrapper. -->
+<polymer-element name="cs-control" attributes="model">
+  <template>
+    <template bind="{{ model as m }}">
+
+      <!-- Container for injecting custom elements. -->
+      <div id="container"></div>
+
+      <!-- Standard elements. -->
+      <template if="{{ m.type == 'boolean' }}">
+        <cs-control-checkbox control="{{ m }}" checked="{{ settings[m.setting].value }}">
+        </cs-control-checkbox>
+      </template>
+      <template if="{{ m.type == 'slider' }}">
+        <cs-control-slider control="{{ m }}" value="{{ settings[m.setting].value }}">
+        </cs-control-slider>
+      </template>
+      <template if="{{ m.type == 'dropdown' }}">
+        <cs-control-dropdown control="{{ m }}" selected="{{ settings[m.setting].value }}">
+        </cs-control-dropdown>
+      </template>
+
+    </template>
+  </template>
+  <script>
+    Polymer({
+      settings: cs.settings,
+      ready: function() {
+        // For unknown types, create that element and pass it the model.
+        // Todo: understand why model can be undefined.
+        if (!this.model || this.model.type.substr(0, 3) != 'cs-')
+          return;
+
+        // Generate HTML with bound attributes.
+        var html = '<' + this.model.type;
+        Object.keys(this.model.attributes).forEach(function(attr) {
+          html += ' ' + attr + '="{{ model.attributes.' + attr + ' }}"';
+        });
+        html += '></' + this.model.type + '>';
+        this.injectBoundHTML(html, this.$.container);
+      },
+    });
+  </script>
+</polymer-element>

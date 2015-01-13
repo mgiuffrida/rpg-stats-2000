@@ -1,0 +1,84 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<!-- Presents the outcome of the fight. -->
+<polymer-element name="cs-results-page">
+  <template>
+    <style>
+      /* Todo: dedupe these styles. */
+      #card {
+        display: block;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        border-radius: 2px;
+        background-color: #fff;
+        padding: 15px 20px 20px 20px;
+      }
+
+      #page {
+        margin-top: 20px;
+      }
+
+      header {
+        margin-bottom: 30px;
+        font-size: 90%;
+        color: #666;
+      }
+
+      #card {
+        margin: 0 0 20px 5px;
+      }
+      
+      #mainHeader {
+        height: 53px; /* medium-tall - 40px - 20px - 15px */
+        color: #000;
+        font-size: 150%;
+        margin: 0 -20px 10px -20px;
+        padding: 0 20px 0 20px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      .won {
+        color: #03a9f4;
+        font-weight: bold;
+      }
+
+      .lost {
+        color: red;
+        font-weight: bold;
+      }
+
+      div.result {
+        font-size: 120%;
+      }
+    </style>
+
+    <div id="page">
+      <div id="card">
+        <header id="mainHeader">Battle</header>
+        <div class="result">
+          <h4>You face the Evil Boss...</h4>
+          <template if="{{ won }}">
+            <p class="won">You have defeated the Evil Boss!</p>
+            <p>You finished with {{ health }}/100 HP remaining.</p>
+          </template>
+          <template if="{{ !won }}">
+            <p class="lost">You have died.</p>
+            <p>Try changing your stats.</p>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      update: function() {
+        var result = api.fight(cs.settings);
+        this.won = result.won;
+        this.health = result.health;
+      },
+    });
+  </script>
+</polymer-element>

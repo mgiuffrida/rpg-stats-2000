@@ -1,0 +1,92 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="cs-control.html">
+
+<!-- Card displaying a group of settings. -->
+<polymer-element name="cs-settings-card" attributes="label controls description" noscript>
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+        border-radius: 2px;
+        background-color: #fff;
+        padding: 15px 20px 20px 20px;
+      }
+
+      header {
+        margin-bottom: 20px;
+        font-size: 90%;
+        color: #666;
+      }
+
+      .cs-control::shadow paper-checkbox {
+        -webkit-padding-end: 20px;
+        -webkit-padding-start: 0;
+      }
+
+      .cs-control::shadow core-label,
+      core-label {
+        padding-bottom: 20px;
+        padding-top: 15px;
+      }
+
+      .cs-control::shadow paper-checkbox::shadow #checkbox.checked {
+        border-color: #03a9f4;
+      }
+
+      .cs-control::shadow paper-checkbox::shadow #ink[checked] {
+        color: #03a9f4;
+      }
+
+      .cs-control::shadow core-label h4 {
+        font-weight: normal;
+        display: block;
+        margin: 0;
+      }
+
+      .cs-control::shadow core-label p {
+        font-size: 90%;
+        color: #666;
+        margin: 6px 0 0 0;
+        margin-bottom: 0px;
+      }
+
+      .cs-control::shadow paper-slider {
+        width: 50%;
+      }
+
+      .cs-control::shadow paper-slider::shadow .slider-markers {
+        display: none !important;
+      }
+
+      .cs-control::shadow paper-slider::shadow #sliderBar::shadow #activeProgress {
+        background-color: #03a9f4;
+      }
+
+      .cs-control::shadow paper-slider::shadow #sliderKnobInner {
+        background-color: #03a9f4;
+      }
+
+      .cs-control::shadow paper-slider::shadow #sliderKnobInner::before {
+        background-color: #03a9f4;
+      }
+    </style>
+
+    <template bind="{{ label }}">
+      <header>{{}}</header>
+    </template>
+
+    <template bind="{{ description }}">
+      <p id="description">{{}}</p>
+    </template>
+
+    <template repeat="{{ control in controls }}">
+      <cs-control model="{{ control }}"></cs-control>
+    </template>
+  </template>
+</polymer-element>

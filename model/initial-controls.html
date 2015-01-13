@@ -1,0 +1,94 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<script>
+  Polymer('cs-settings-app', {
+    created: function() {
+      // Navigation.
+      this.pageGroups = [
+        [{
+          id: 'combat',
+          label: 'Combat',
+          icon: 'social:person',
+        }, {
+          id: 'intelligence',
+          label: 'Intelligence',
+          icon: 'error',
+        }, {
+          id: 'magic',
+          label: 'Magic',
+          icon: 'social:whatshot',
+        },
+        ], [{
+          id: 'build',
+          label: 'Body',
+          icon: 'accessibility',
+        }, {
+          id: 'features',
+          label: 'Face',
+          icon: 'image:tag-faces',
+        }]
+      ];
+
+      // Controls.
+      this.controlGroups = {};
+      this.controlGroups['combat'] = [
+        new CSControlGroup('Combat', [
+          new CSSliderControl('combat.speed', 'Speed', 1, 10),
+          new CSSliderControl('combat.strength', 'Strength', 1, 10),
+          new CSSliderControl('combat.agility', 'Agility', 1, 10),
+          new CSControl('combat.weapon', 'dropdown', 'Weapon:'),
+        ]),
+        new CSControlGroup('Endurance', [
+          new CSSliderControl('combat.endurance.carry', 'Carry weight', 60, 100, 5),
+          new CSControl('combat.endurance.unlimited_sprint', 'boolean',
+                        'Unlimited sprinting'),
+        ]),
+      ];
+      this.controlGroups['intelligence'] = [
+        new CSControlGroup('Intelligence', [
+          new CSControl('intelligence.quick_study', 'boolean', 'Quick Study'),
+          new CSControl('intelligence.academy', 'boolean', 'Academy-level education'),
+          new CSSliderControl('intelligence.knowledge', 'Knowledge', 1, 10),
+          new CSSliderControl('intelligence.wisdom', 'Wisdom', 1, 10),
+          new CSSliderControl('intelligence.deductive_reasoning', 'Deductive reasoning', 0, 40, 4),
+          new CSCustomControl('cs-control-iq', {min: 0,
+                                                max: 155,
+                                                step: 1}),
+        ])];
+      this.controlGroups['magic'] = [
+        new CSControlGroup('Magic', [
+          new CSControl('magic.element', 'dropdown', 'Element specialty:',
+                        'Different elements have unique effects on enemies. Maybe.'),
+        ]),
+        new CSControlGroup('Skills', [
+          new CSControl('magic.enchanting', 'boolean', 'Enchanting'),
+          new CSControl('magic.transformation', 'boolean', 'Transformation'),
+          new CSControl('magic.illusion', 'boolean', 'Illusion'),
+          new CSControl('magic.restoration', 'boolean', 'Restoration'),
+        ])];
+      this.controlGroups['build'] = [
+        new CSControlGroup('Build', [
+          new CSControl('build.race', 'dropdown', 'Race:'),
+        ]),
+        new CSControlGroup('Measurements', [
+          new CSControl('build.height', 'dropdown', 'Height:'),
+          new CSControl('build.weight', 'dropdown', 'Weight:',
+                        'Mass can increase your damage, but also lowers your agility.'),
+        ])];
+      this.controlGroups['features'] = [
+        new CSControlGroup('Features', [
+          new CSControl('features.eyes', 'dropdown', 'Eye color:'),
+          new CSControl('features.nose', 'dropdown', 'Nose type:'),
+        ], 'Features have no effect on anything whatsoever.'),
+        new CSControlGroup('Hair', [
+          new CSControl('features.hair.color', 'dropdown', 'Hair color:', 'Let\'s be superficial.'),
+          new CSSliderControl('features.hair.length', 'Hair length', 1, 20),
+          new CSControl('features.hair.widows_peak', 'boolean', 'Widow\'s peak'),
+        ])];
+    }
+  });
+</script>

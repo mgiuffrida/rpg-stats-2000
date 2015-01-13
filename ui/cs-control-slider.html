@@ -1,0 +1,50 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../bower_components/core-label/core-label.html">
+<link rel="import" href="../bower_components/paper-slider/paper-slider.html">
+
+<!-- Slider control for range settings. -->
+<polymer-element name="cs-control-slider" extends="cs-control"
+    attributes="control value" class="cs-control">
+  <template>
+    <style>
+      #label {
+        font-weight: bold;
+        margin-top: 14px;
+      }
+    </style>
+    <template bind="{{ control as c}}">
+      <core-label vertical layout>
+        <div id="label">{{ c.label }}</div>
+        <template bind="{{ c.description }}">
+          <p>{{}}</p>
+        </template>
+        <paper-slider id="slider" value="{{ value }}"  min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" disabled="{{ c.disabled }}" pin snaps></paper-slider>
+      </core-label>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      settings: cs.settings,
+
+      valueChanged: function() {
+        if (!this.$.slider.snaps)
+          return;
+        // Async to work around a bug where tapping the slider to move the
+        // knob causes |change| to be fired before the value is updated.
+        // (filed #39 on Polymer/paper-slider)
+        this.async(function() {
+          // If the slider snaps to the nearest step, the value will only be in between steps if it was set
+          // elsewhere (i.e., the api). To ensure that the value is not rounded *up* to the nearest step,
+          // we manually round it down in this case.
+          // If the slider were allowed to round up, we could exceed the limit (api.pointsLeft).
+          this.value -= (this.value - this.control.min) % this.control.step;
+        });
+      },
+    });
+  </script>
+</polymer-element>

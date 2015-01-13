@@ -1,0 +1,66 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../bower_components/core-icons/image-icons.html">
+<link rel="import" href="../bower_components/core-icons/social-icons.html">
+<link rel="import" href="../bower_components/core-item/core-item.html">
+<link rel="import" href="../bower_components/core-menu/core-menu.html">
+
+<!-- Navigation menu for settings pages. -->
+<polymer-element name="cs-grouped-menu" attributes="groups selected">
+  <template>
+    <style>
+      core-menu {
+        margin: 0;
+      }
+
+      core-item {
+        padding-left: 46px; /* 90 - (24px + 20px) */
+        font-weight: bold;
+      }
+
+      core-item:not(.core-selected)::shadow core-icon {
+        opacity: 0.5;
+      }
+
+      core-item.core-selected {
+        color: #03a9f4;
+      }
+
+      section {
+        margin-bottom: 20px;
+      }
+    </style>
+    <core-menu id="menu" on-core-select="{{ handleSelect }}" itemsSelector="core-item"
+        selected="{{ selected }}" target="{{ $.nav }}">
+      <nav id="nav">
+        <template repeat="{{ group in groups }}">
+          <section>
+            <template repeat="{{ item in group }}">
+              <core-item label="{{ item.label }}" data-id="{{ item.id }}" icon="{{ item.icon }}"
+                  on-tap="{{ handleTap }}">
+              </core-item>
+            </template>
+          </section>
+        </template>
+      </div>
+    </core-menu>
+  </template>
+  <script>
+    Polymer({
+      handleSelect: function(e, detail) {
+        if (detail.isSelected) {
+          this.fire('page-select', { id: detail.item.dataset['id'] });
+        }
+      },
+
+      handleTap: function(e, detail) {
+        if (this.$.menu.selectedIndex != detail)
+          this.fire('page-tap');
+      },
+    });
+  </script>
+</polymer-element>

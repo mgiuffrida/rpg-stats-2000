@@ -1,0 +1,37 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../bower_components/core-localstorage/core-localstorage.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-action-dialog.html">
+
+<!-- Introductory modal dialog. -->
+<polymer-element name="cs-intro">
+  <template>
+    <core-localstorage id="storage" name="stfu" value="{{ stfu }}" on-core-localstorage-load="{{ loaded }}"></core-localstorage>
+    <paper-action-dialog backdrop id="dialog" heading="Welcome" transition="core-transition-center">
+      <p>Greetings, warrior! Build your character. The Evil Boss awaits.</p>
+      <p>You start with some basic stats and abilities, but you can pick and choose your strengths and weaknesses.<br>
+        You only have {{ api.totalPoints }} points to allocate, so you might want to decrease or disable some stats to beef up other areas.</p>
+      <p>Your choices will determine your success in the final battle.</p>
+      <paper-button dismissive on-tap="{{ dontShowAgain }}">Don't show again</paper-button>
+      <paper-button affirmative>Start</paper-button>
+    </paper-action-dialog>
+  </template>
+  <script>
+    Polymer({
+      dontShowAgain: function() {
+        this.stfu = true;
+        this.$.storage.save();
+      },
+
+      loaded: function() {
+        if (!this.stfu)
+          this.$.dialog.open();
+      },
+    });
+  </script>
+</polymer-element>

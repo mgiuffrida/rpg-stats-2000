@@ -1,0 +1,32 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+<link rel="import" href="cs-control-slider.html">
+
+<!-- Read-only slider to calculate IQ. -->
+<polymer-element name="cs-control-iq" attributes="min max step">
+  <template>
+    <cs-control-slider control="{{ slider }}" value="{{ iq }}"></cs-control-slider>
+  </template>
+  <script>
+    Polymer({
+      ready: function() {
+        this.slider = new CSSliderControl('', 'IQ:', this.min, this.max, this.step,
+                                          'Your IQ is the result of the above stats.', true);
+        Object.observe(cs.settings['intelligence.knowledge'], this.update.bind(this));
+        Object.observe(cs.settings['intelligence.wisdom'], this.update.bind(this));
+        Object.observe(cs.settings['intelligence.deductive_reasoning'], this.update.bind(this));
+        this.update();
+      },
+
+      /** Calculates IQ using intelligence stats. */
+      update: function() {
+        this.iq = cs.settings['intelligence.knowledge'].value * 2 +
+                  cs.settings['intelligence.wisdom'].value * 1.5 +
+                  cs.settings['intelligence.deductive_reasoning'].value * 3;
+      },
+    });
+  </script>
+</polymer-element>

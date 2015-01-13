@@ -1,0 +1,66 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<script>
+  /**
+   * Base class for specifying controls.
+   * @param {string} setting Name of the corresponding setting.
+   * @param {string} type Type of control.
+   * @param {string} label Label for control.
+   * @param {string=} opt_description Description related to control.
+   * @param {boolean=} opt_disabled Whether the control is disabled.
+   * @constructor
+  */
+  function CSControl(setting, type, label, opt_description, opt_disabled) {
+    this.setting = setting;
+    this.type = type;
+    this.label = label;
+    this.description = opt_description;
+    this.disabled = opt_disabled;
+  }
+
+  /**
+   * Slider control.
+   * @param {string} setting Name of the corresponding setting.
+   * @param {string} label Label for control.
+   * @param {number} min Min of the range.
+   * @param {number} max Max of the range.
+   * @param {number=} opt_step Granularity for values along range.
+   * @param {string=} opt_description Description related to control.
+   * @param {boolean=} opt_disabled Whether the control is disabled.
+   * @constructor
+  */
+  function CSSliderControl(setting, label, min, max, opt_step, opt_description, opt_disabled) {
+    CSControl.call(this, setting, 'slider', label, opt_description, opt_disabled);
+    this.min = min;
+    this.max = max;
+    this.step = typeof opt_step == 'undefined' ? 1 : opt_step;
+  }
+
+  /**
+   * Control using the specified element and provided propreties.
+   * @param {string} element Tag of the component element to use
+   * @param {Object=} opt_attributes Dictionary of attributes to set.
+   * @constructor
+   */
+  function CSCustomControl(element, opt_attributes) {
+    this.type = element;
+    this.attributes = opt_attributes;
+  }
+
+  /**
+   * Group of controls to place ina card.
+   * @param {string} label Label of group.
+   * @param {!Array} controls Controls to show.
+   * @param {string=} opt_description Description of group.
+   * @constructor
+   */
+  function CSControlGroup(label, controls, opt_description) {
+    this.label = label;
+    this.controls = controls;
+    this.description = opt_description;
+  }
+</script>

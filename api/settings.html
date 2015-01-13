@@ -1,0 +1,44 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<script>
+  cs = typeof cs == 'undefined' ? {} : cs;
+
+  /** Dictionary of settings. */
+  cs.settings = {
+    'combat.speed': new CSRangeSetting(1, 10, 2),
+    'combat.strength': new CSRangeSetting(1, 10, 4),
+    'combat.agility': new CSRangeSetting(1, 10, 5),
+    'combat.weapon': new CSOptionSetting(['Sword', 'Bow', 'Staff'], [2, 2, 1], 0),
+    'combat.endurance.carry': new CSRangeSetting(60, 100, 70),
+    'combat.endurance.unlimited_sprint': new CSBooleanSetting(false, 3),
+
+    'intelligence.quick_study': new CSBooleanSetting(true, 2),
+    'intelligence.academy': new CSBooleanSetting(false, 2),
+    'intelligence.knowledge': new CSRangeSetting(1, 10, 4),
+    'intelligence.wisdom': new CSRangeSetting(1, 10, 3),
+    'intelligence.deductive_reasoning': new CSRangeSetting(1, 40, 20),
+
+    'magic.enchanting': new CSBooleanSetting(true, 4),
+    'magic.transformation': new CSBooleanSetting(true, 4),
+    'magic.illusion': new CSBooleanSetting(false, 4),
+    'magic.restoration': new CSBooleanSetting(false, 4),
+    'magic.element': new CSOptionSetting(['Earth', 'Water', 'Air', 'Fire'], [1, 2, 1, 4], 2),
+
+    'build.race': new CSOptionSetting(['Dwarf', 'Elf', 'Hobbit', 'Human'], [0, 0, 0, 0], 1),
+    'build.height': new CSOptionSetting(['Short', 'Average', 'Tall'], [0, 1, 3], 1),
+    'build.weight': new CSOptionSetting(['Underweight', 'Slim', 'Muscular', 'Overweight', 'Obese'],
+                                        [1, 3, 6, 2, 0], 1),
+
+    'features.eyes': new CSOptionSetting(['Blue', 'Green', 'Red', 'Yellow', 'Brown', 'Black', 'White'],
+                                         [0, 0, 0, 0, 0, 0, 0], 0),
+    'features.nose': new CSOptionSetting(['Crooked', 'Hook', 'Slant', 'Sloped', 'Bulbous', 'Nixon'],
+                                         [0, 0, 0, 0, 0, 0], 3),
+    'features.hair.widows_peak': new CSBooleanSetting(false, 0),
+    'features.hair.color': new CSOptionSetting(['Blonde', 'Green', 'Grey', 'Red'], [0, 0, 0, 0], 2),
+    'features.hair.length': new CSRangeSetting(1, 20, 12, function() { return 0; }),
+  };
+</script>

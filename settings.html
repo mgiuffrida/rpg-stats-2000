@@ -1,0 +1,35 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<!DOCTYPE html>
+<head>
+  <title>Settings App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body,
+    body /deep/ paper-action-dialog {
+      font-size: 14px;
+      font-family: 'RobotoDraft', sans-serif;
+      margin: 0px;
+      cursor: default;
+    }
+  </style>
+  <link rel="import" href="bower_components/font-roboto/roboto.html">
+  <link rel="import" href="ui/cs-settings.html">
+</head>
+<body>
+  <polymer-element name="cs-settings-app">
+    <link rel="import" href="model/initial-controls.html">
+    <template>
+      <cs-settings controlGroups="{{ controlGroups }}" pageGroups="{{ pageGroups }}"></cs-settings>
+    </template>
+  </polymer-element>
+  <cs-settings-app></cs-settings-app>
+</body>

@@ -1,0 +1,84 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../bower_components/core-label/core-label.html">
+<link rel="import" href="../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<!-- Dropdown control for option settings. -->
+<polymer-element name="cs-control-dropdown"
+    attributes="control selected" class="cs-control">
+  <template>
+    <style>
+      paper-dropdown-menu {
+        min-width: 130px;
+        cursor: default;
+        margin-left: 20px;
+        padding: 0;
+      }
+
+      .dropdown {
+        min-width: 130px;
+      }
+
+      p {
+        margin-top: 0;
+        font-size: 90%;
+      }
+
+      .label {
+        font-weight: bold;
+        margin: 10px 0;
+        min-width: 85px;
+      }
+    </style>
+    <template if="{{ control }}" bind="{{ control as c }}">
+      <core-label horizontal layout center>
+        <span class="label">{{ c.label }}</span>
+        <paper-dropdown-menu>
+          <paper-dropdown transition class="dropdown">
+            <core-menu id="menu" selected="{{ selected }}">
+              <template repeat="{{ settings[c.setting].options }}">
+                <paper-item>{{}}</paper-item>
+              </template>
+            </core-menu>
+          </paper-dropdown>
+        </paper-dropdown-menu>
+      </core-label>
+      <template if="{{ c.description }}">
+        <p>{{ c.description }}</p>
+      </template>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      settings: cs.settings,
+
+      ready: function() {
+        Object.observe(api, this.apiChanged.bind(this));
+        this.updateOptions();
+      },
+
+      apiChanged: function(changes) {
+        for (var i = 0; i < changes.length; i++) {
+          if (changes[i].name == 'pointsLeft') {
+            this.updateOptions();
+            return;
+          }
+        }
+      },
+
+      /** Disables options that cost more than the points remaining. */
+      updateOptions: function() {
+        var costs = cs.settings[this.control.setting].costs;
+        var currentCost = costs[this.selected];
+        for (var i = 0; i < costs.length; i++)
+          this.$.menu.items[i].disabled = api.pointsLeft + currentCost < costs[i];
+      },
+    });
+  </script>
+</polymer-element>

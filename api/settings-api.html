@@ -1,0 +1,226 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+  <script>
+  /**
+   * A simple API to run the app.
+   * @struct
+   */
+  var api = {
+    /**
+     * Calculates the points already spent by the initial settings
+     * @param {!Object} settings Initial settings.
+     */
+    init: function(settings) {
+      api.pointsLeft = api.totalPoints;
+      Object.keys(settings).forEach(function(key) {
+        api.pointsLeft -= settings[key].getCost(settings[key].value);
+      });
+    },
+
+    /**
+     * Determines the outcome of the fight.
+     * @param {!Object} settings Settings.
+     * @return {Object} Result of the fight.
+     */
+    fight: function(settings) {
+      var score = 0;
+
+      score += settings['combat.speed'].value;
+      score += settings['combat.strength'].value;
+      var agility = settings['combat.agility'].value;
+      var weapon = settings['combat.weapon'].value;
+      if (weapon == 1)  // Bow
+        score += agility;
+      else if (weapon == 0) {  // Sword
+        score += agility * 2;
+        score -= (100 - settings['combat.endurance.carry'].value) / 5;
+      }
+      if (settings['combat.endurance.unlimited_sprint'].value)
+        score += 5;
+
+      if (settings['intelligence.quick_study'].value)
+        score += 2;
+      if (settings['intelligence.academy'].value)
+        score += 2;
+      if (settings['intelligence.quick_study'].value &&
+          settings['intelligence.academy'].value) {
+            score += 2;
+      }
+
+      // Todo: Can't get IQ from control -- calculation should be moved to model..
+
+      var numMagic = 0;
+      if (settings['magic.enchanting'].value)
+        numMagic++;
+      if (settings['magic.transformation'].value)
+        numMagic++;
+      if (settings['magic.illusion'].value)
+        numMagic++;
+      if (settings['magic.restoration'].value)
+        numMagic++;
+      score += [10, 18, 24, 26][numMagic - 1];
+
+      score += settings['build.height'].value * 6;
+      var weight = settings['build.weight'];
+      score += Math.pow(weight.costs[weight.value], 1.5);
+
+      var result = {won: score >= 60};
+      if (result.won)
+        result.health = Math.floor(Math.min(100, (score - 50) * 2));
+      return result;
+    },
+
+    totalPoints: 80,
+  };
+
+  /**
+   * The base Setting class.
+   * @param {string|number|boolean} value The value of the setting.
+   * @param {boolean=} opt_commitOnChange True if commit should be called when the value changes (on by default).
+   * @constructor
+   */
+  function CSSetting(value, opt_commitOnChange) {
+    this.value = value;
+    this.commitOnChange = typeof opt_commitOnChange == 'undefined' ? true : opt_commitOnChange;
+
+    Object.observe(this, this.onChanged_.bind(this));
+  }
+
+
+  /**
+   * Handler for observed changes.
+   * @param {!Array} changes
+   * @private
+   */
+  CSSetting.prototype.onChanged_ = function(changes) {
+    changes.forEach(function(change) {
+      if (change.name != 'value')
+        return;
+
+      if (typeof this.oldValue == 'undefined')
+        this.oldValue = change.oldValue;
+
+      this.commit(this.changeSuccess.bind(this),
+                  this.changeFailure.bind(this));
+    }.bind(this));
+  };
+
+  /**
+   * Called when the change is successfully commited.
+   */
+  CSSetting.prototype.changeSuccess = function() {
+    this.oldValue = this.value;
+  };
+
+  /**
+   * Called when the change fails to be commited, to revert the setting.
+   * @param {number} maxCost The most valid number of points the setting can currently cost.
+   */
+  CSSetting.prototype.changeFailure = function(maxCost) {
+    this.value = this.oldValue;
+  };
+
+  /**
+   * Attempts to apply the setting.
+   * @param {function()} resolve Called if the commit succeeds.
+   * @param {function(number)} reject Called if the commit fails.
+   */
+  CSSetting.prototype.commit = function(resolve, reject) {
+    if (api.pointsLeft - (this.getCost(this.value) - this.getCost(this.oldValue)) >= 0) {
+      api.pointsLeft -= (this.getCost(this.value) - this.getCost(this.oldValue));
+      if (resolve)
+        resolve();
+    } else if (reject) {
+      reject(api.pointsLeft);
+    }
+  };
+
+  /**
+   * Returns the number of points the setting would cost at the given value.
+   * @param {number} value Value for which to calculate cost.
+   * @return {number}
+   */
+  CSSetting.prototype.getCost = function(value) {
+    return value;
+  };
+
+  /**
+   * Boolean setting.
+   * @param {boolean} value
+   * @param {number} cost Cost of the setting when enabled.
+   * @constructor
+   */
+  function CSBooleanSetting(value, cost) {
+    CSSetting.call(this, value);
+    this.cost = cost;
+  }
+
+  CSBooleanSetting.prototype = Object.create(CSSetting.prototype);
+
+  /** @inheritDoc */
+  CSBooleanSetting.prototype.getCost = function(value) {
+    return value ? this.cost : 0;
+  };
+
+  /**
+   * Range setting.
+   * @param {number} min
+   * @param {number} max
+   * @param {number} value
+   * @param {function(): number=} opt_costFn Function to calculate the current cost.
+   * @constructor
+   */
+  function CSRangeSetting(min, max, value, opt_costFn) {
+    CSSetting.call(this, value);
+    this.min = min;
+    this.max = max;
+    this.costFn_ = opt_costFn;
+  }
+
+  CSRangeSetting.prototype = Object.create(CSSetting.prototype);
+
+  /** @inheritDoc */
+  CSRangeSetting.prototype.getCost = function(value) {
+    if (this.costFn)
+      return this.costFn(value);
+    return value - this.min;
+  };
+
+  /**
+   * Updates the setting's value to the highest possible value.
+   * @param {number} maxCost The most valid number of points the setting can currently cost.
+   * @override
+   **/
+  CSRangeSetting.prototype.changeFailure = function(maxCost) {
+    // Async to Work around a bug where tapping the slider to move the
+    // knob causes |change| to be fired before the value is updated.
+    // (filed #39 on Polymer/paper-slider)
+    window.requestAnimationFrame(function() {
+      this.value = this.oldValue + maxCost;
+    }.bind(this));
+  };
+
+  /**
+   * Setting chosen among options.
+   * @param {!Array} options
+   * @param {!Array} costs The costs associated with each option.
+   * @param {number} selectedIndex The index of the current option.
+   * @constructor
+   */
+  function CSOptionSetting(options, costs, selectedIndex) {
+    CSSetting.call(this, selectedIndex);
+    this.options = options;
+    this.costs = costs;
+  }
+
+  CSOptionSetting.prototype = Object.create(CSSetting.prototype);
+
+  /** @inheritDoc */
+  CSOptionSetting.prototype.getCost = function(value) {
+    return this.costs[value];
+  };
+</script>
