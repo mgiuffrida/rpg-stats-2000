@@ -74,7 +74,7 @@ found in the LICENSE file.
       return result;
     },
 
-    totalPoints: 80,
+    totalPoints: 70,
   };
 
   /**
@@ -185,8 +185,8 @@ found in the LICENSE file.
 
   /** @inheritDoc */
   CSRangeSetting.prototype.getCost = function(value) {
-    if (this.costFn)
-      return this.costFn(value);
+    if (this.costFn_)
+      return this.costFn_(value);
     return value - this.min;
   };
 

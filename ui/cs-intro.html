@@ -23,6 +23,8 @@ found in the LICENSE file.
   </template>
   <script>
     Polymer({
+      api: api,
+
       dontShowAgain: function() {
         this.stfu = true;
         this.$.storage.save();
