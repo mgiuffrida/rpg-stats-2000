@@ -1,0 +1,73 @@
+<!--
+Copyright 2015 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<link rel="import" href="../../api/stub-settings.html">
+<link rel="import" href="../cs-control.html">
+
+<script>
+(function() {
+
+var assert = chai.assert;
+
+describe('ct-control', function() {
+  var control;
+  var slider;
+  var model;
+
+  describe('ct-slider-control', function() {
+    before(function(done) {
+      model = new CSSliderControl('test.range', 'Range test', 10, 20);
+      control = document.createElement('cs-control');
+      control.model = model;
+      setTimeout(done);
+    });
+
+    beforeEach(function() {
+      cs.settings['test.range'].value = 12;
+
+      slider = control.shadowRoot.getElementsByTagName('cs-control-slider')[0];
+      assert.equal(slider.value, 12);
+    });
+
+    it('should accept a valid value', function(done) {
+      slider.value = 16;
+      setTimeout(function() {
+        assert.equal(cs.settings['test.range'].value, 16);
+        assert.equal(slider.value, 16);
+        done();
+      });
+    });
+
+    it('should not accept a too large value', function(done) {
+      slider.value = 40;
+      setTimeout(function() {
+        assert.equal(cs.settings['test.range'].value, 20);
+        assert.equal(slider.value, 20);
+        done();
+      });
+    });
+
+    it('should not accept a too small value', function(done) {
+      slider.value = 0;
+      setTimeout(function() {
+        assert.equal(cs.settings['test.range'].value, 10);
+        assert.equal(slider.value, 10);
+        done();
+      });
+    });
+
+    it('should reflect the setting', function(done) {
+      cs.settings['test.range'].value = 15;
+      setTimeout(function() {
+        assert.equal(slider.value, 15);
+        done();
+      });
+    });
+  });
+});
+
+})();
+</script>
