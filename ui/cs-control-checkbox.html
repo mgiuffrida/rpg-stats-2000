@@ -5,28 +5,37 @@ found in the LICENSE file.
 -->
 
 <link rel="import" href="../bower_components/core-label/core-label.html">
-<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 
 <!-- Checkbox control for boolean settings. -->
 <polymer-element name="cs-control-checkbox" attributes="control checked">
   <template>
     <style>
-      paper-checkbox {
+      paper-toggle-button::shadow [checked] .toggle {
+        background-color: #03a9f4;
+      }
+
+      paper-toggle-button::shadow [checked] .toggle-ink {
+        color: #03a9f4;
+      }
+
+      paper-toggle-button {
         -webkit-padding-end: 20px;
         -webkit-padding-start: 0;
       }
 
-      h4 {
-        margin: 14px 0;
+      :host core-label > div > h4 {
+        font-weight: normal;
+        margin: 0;
       }
     </style>
     <template bind="{{ control as c}}">
       <core-label horizontal layout center>
-        <paper-checkbox id="checkbox" for checked="{{ checked }}"></paper-checkbox>
+        <paper-toggle-button id="checkbox" for checked="{{ checked }}"></paper-toggle-button>
         <div layout vertical>
           <h4>{{ c.label }}</h4>
-          <template if="{{ c.description }}">
-            <p>{{ c.description }}</p>
+          <template bind="{{ c.description }}">
+            <p class="description">{{ }}</p>
           </template>
         </div>
       </core-label>

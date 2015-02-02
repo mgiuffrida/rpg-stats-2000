@@ -13,6 +13,11 @@ found in the LICENSE file.
 <!-- Control wrapper. -->
 <polymer-element name="cs-control" attributes="model">
   <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
     <template bind="{{ model as m }}">
       <!-- Container for injecting custom elements. -->
       <div id="container"></div>

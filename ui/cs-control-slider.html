@@ -14,14 +14,23 @@ found in the LICENSE file.
     <style>
       #label {
         font-weight: bold;
-        margin-top: 14px;
+      }
+
+      paper-slider::shadow #sliderBar::shadow #activeProgress,
+      paper-slider::shadow #sliderKnobInner,
+      paper-slider::shadow #sliderKnobInner::before {
+        background-color: #03a9f4;
+      }
+
+      p#description {
+        margin: 6px 0 0 0;
       }
     </style>
     <template bind="{{ control as c}}">
       <core-label vertical layout>
         <div id="label">{{ c.label }}</div>
         <template bind="{{ c.description }}">
-          <p>{{}}</p>
+          <p class="description" id="description">{{ }}</p>
         </template>
         <paper-slider id="slider" value="{{ value }}"  min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" disabled="{{ c.disabled }}" pin snaps></paper-slider>
       </core-label>

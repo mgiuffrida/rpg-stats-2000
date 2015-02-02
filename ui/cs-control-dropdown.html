@@ -25,15 +25,18 @@ found in the LICENSE file.
         min-width: 130px;
       }
 
-      p {
-        margin-top: 0;
-        font-size: 90%;
-      }
-
       .label {
         font-weight: bold;
         margin: 10px 0;
         min-width: 85px;
+      }
+
+      paper-dropdown-menu core-menu paper-item.core-selected {
+        background-color: #03a9f4;
+      }
+
+      paper-dropdown-menu core-menu paper-item::shadow paper-ripple {
+        color: #0076c1;
       }
     </style>
     <template if="{{ control }}" bind="{{ control as c }}">
@@ -49,8 +52,8 @@ found in the LICENSE file.
           </paper-dropdown>
         </paper-dropdown-menu>
       </core-label>
-      <template if="{{ c.description }}">
-        <p>{{ c.description }}</p>
+      <template bind="{{ c.description }}">
+        <p class="description">{{ }}</p>
       </template>
     </template>
   </template>

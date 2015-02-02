@@ -24,56 +24,22 @@ found in the LICENSE file.
         color: #666;
       }
 
-      .cs-control::shadow paper-checkbox {
-        -webkit-padding-end: 20px;
-        -webkit-padding-start: 0;
+      cs-control {
+        margin-top: 22px;
       }
 
-      .cs-control::shadow core-label,
-      core-label {
-        padding-bottom: 20px;
-        padding-top: 15px;
-      }
-
-      .cs-control::shadow paper-checkbox::shadow #checkbox.checked {
-        border-color: #03a9f4;
-      }
-
-      .cs-control::shadow paper-checkbox::shadow #ink[checked] {
-        color: #03a9f4;
-      }
-
-      .cs-control::shadow core-label h4 {
-        font-weight: normal;
-        display: block;
+      cs-control /deep/ p.description {
+        font-size: 90%;
+        color: #666;
         margin: 0;
       }
 
-      .cs-control::shadow core-label p {
-        font-size: 90%;
-        color: #666;
-        margin: 6px 0 0 0;
-        margin-bottom: 0px;
+      cs-control /deep/ paper-slider {
+        width: 300px;
       }
 
-      .cs-control::shadow paper-slider {
-        width: 50%;
-      }
-
-      .cs-control::shadow paper-slider::shadow .slider-markers {
+      cs-control /deep/ paper-slider::shadow .slider-markers {
         display: none !important;
-      }
-
-      .cs-control::shadow paper-slider::shadow #sliderBar::shadow #activeProgress {
-        background-color: #03a9f4;
-      }
-
-      .cs-control::shadow paper-slider::shadow #sliderKnobInner {
-        background-color: #03a9f4;
-      }
-
-      .cs-control::shadow paper-slider::shadow #sliderKnobInner::before {
-        background-color: #03a9f4;
       }
     </style>
 
