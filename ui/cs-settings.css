@@ -16,7 +16,8 @@ core-header-panel {
 }
 
 core-header-panel[mode=cover]::shadow #mainContainer {
-  padding: 40px 120px 0 0;
+  padding-right: 120px;
+  margin-top: 40px;
 }
 
 #mainDrawer[narrow] core-header-panel[mode=cover]::shadow #mainContainer {
