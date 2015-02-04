@@ -34,9 +34,9 @@ found in the LICENSE file.
     </style>
 
     <div id="page">
-       <template repeat="{{ group in controls }}">
-         <cs-settings-card controls="{{ group.controls }}" label="{{ group.label }}"
-             description="{{ group.description }}">
+       <template repeat="{{ controls }}">
+         <cs-settings-card controls="{{ controls }}" label="{{ label }}"
+             description="{{ description }}">
          </cs-settings-card>
        </template>
     </div>
