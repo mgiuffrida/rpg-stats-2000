@@ -13,6 +13,8 @@ found in the LICENSE file.
   <template>
     <core-localstorage id="storage" name="stfu" value="{{ stfu }}" on-core-localstorage-load="{{ loaded }}"></core-localstorage>
     <paper-action-dialog backdrop id="dialog" heading="Welcome" transition="core-transition-center">
+      <p style="color: red; font-weight: bold">WARNING: This was a silly prototype built to demonstrate building a data-bound UI from JSON.<br>
+        It relies on an ancient version of Polymer (0.5) and older Web standards.</p>
       <p>Greetings, warrior! Build your character. The Evil Boss awaits.</p>
       <p>You start with some basic stats and abilities, but you can pick and choose your strengths and weaknesses.<br>
         You only have {{ api.totalPoints }} points to allocate, so you might want to decrease or disable some stats to beef up other areas.</p>

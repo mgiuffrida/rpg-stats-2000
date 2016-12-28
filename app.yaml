@@ -1,5 +1,5 @@
 application: rpg-stats-2000
-version: 2
+version: 3
 runtime: python27
 api_version: 1
 threadsafe: true
