@@ -11,7 +11,7 @@ found in the LICENSE file.
 
 <!-- Dropdown control for option settings. -->
 <polymer-element name="cs-control-dropdown"
-    attributes="control selected" class="cs-control">
+    attributes="control selected" extends="cs-control">
   <template>
     <style>
       paper-dropdown-menu {
@@ -62,7 +62,7 @@ found in the LICENSE file.
       settings: cs.settings,
 
       ready: function() {
-        Object.observe(api, this.apiChanged.bind(this));
+        ObjectObserve(api, this.apiChanged.bind(this));
         this.updateOptions();
       },
 

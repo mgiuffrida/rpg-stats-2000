@@ -61,7 +61,7 @@ found in the LICENSE file.
       api: api,
 
       ready: function() {
-        Object.observe(api, function(changes) {
+        ObjectObserve(api, function(changes) {
           if (changes[0].name != 'pointsLeft')
             return;
           this.$.pointsLeft.classList.toggle('warning', api.pointsLeft == 0);

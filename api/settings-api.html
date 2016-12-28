@@ -62,15 +62,15 @@ found in the LICENSE file.
         numMagic++;
       if (settings['magic.restoration'].value)
         numMagic++;
-      score += [10, 18, 24, 26][numMagic - 1];
+      score += [0, 10, 18, 24, 26][numMagic];
 
       score += settings['build.height'].value * 6;
       var weight = settings['build.weight'];
       score += Math.pow(weight.costs[weight.value], 1.5);
 
-      var result = {won: score >= 60};
+      var result = {won: score >= 55};
       if (result.won)
-        result.health = Math.floor(Math.min(100, (score - 50) * 2));
+        result.health = Math.floor(Math.min(100, (score - 40) * 2));
       return result;
     },
 
@@ -87,7 +87,9 @@ found in the LICENSE file.
     this.value = value;
     this.commitOnChange = typeof opt_commitOnChange == 'undefined' ? true : opt_commitOnChange;
 
-    Object.observe(this, this.onChanged_.bind(this));
+    requestAnimationFrame(function() {
+      ObjectObserve(this, this.onChanged_.bind(this));
+    }.bind(this));
   }
 
 

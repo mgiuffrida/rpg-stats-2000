@@ -15,9 +15,9 @@ found in the LICENSE file.
       ready: function() {
         this.slider = new CSSliderControl('', 'IQ:', this.min, this.max, this.step,
                                           'Your IQ is the result of the above stats.', true);
-        Object.observe(cs.settings['intelligence.knowledge'], this.update.bind(this));
-        Object.observe(cs.settings['intelligence.wisdom'], this.update.bind(this));
-        Object.observe(cs.settings['intelligence.deductive_reasoning'], this.update.bind(this));
+        ObjectObserve(cs.settings['intelligence.knowledge'], this.update.bind(this));
+        ObjectObserve(cs.settings['intelligence.wisdom'], this.update.bind(this));
+        ObjectObserve(cs.settings['intelligence.deductive_reasoning'], this.update.bind(this));
         this.update();
       },
 

@@ -1,8 +1,5 @@
 (function() {
-  if (typeof Object.observe != 'undefined')
-    return;
-
-  Object.observe = function(obj, callback, acceptList) {
+  window.ObjectObserve = function(obj, callback, acceptList) {
     var observer = new ObjectObserver(obj);
     if (typeof acceptList == 'undefined') {
       acceptList = ['add', 'update', 'delete', 'reconfigure', 'setPrototype',
@@ -47,8 +44,4 @@
 
     return obj;
   };
-
-  setInterval(function() {
-    Platform.performMicrotaskCheckpoint();
-  }, 10);
 })();

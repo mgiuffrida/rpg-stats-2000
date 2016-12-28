@@ -8,7 +8,7 @@ found in the LICENSE file.
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 
 <!-- Checkbox control for boolean settings. -->
-<polymer-element name="cs-control-checkbox" attributes="control checked">
+<polymer-element name="cs-control-checkbox" attributes="control checked" extends="cs-control" >
   <template>
     <style>
       paper-toggle-button::shadow [checked] .toggle {
@@ -44,7 +44,7 @@ found in the LICENSE file.
   <script>
     Polymer({
       ready: function() {
-        Object.observe(api, this.apiChanged.bind(this));
+        ObjectObserve(api, this.apiChanged.bind(this));
         if (!this.checked)
           this.update();
       },
